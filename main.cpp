@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <GLUT/glut.h>
+#include "glutwrapper.h"
 #include "visuals.h"
 
 int main(int argc, char* argv[])
@@ -23,4 +23,3 @@ int main(int argc, char* argv[])
     glutMainLoop();
     return 0;
 }
-

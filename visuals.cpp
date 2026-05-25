@@ -1,4 +1,4 @@
-#include <GLUT/glut.h>
+#include "glutwrapper.h"
 #include "visuals.h"
 
 #include <cstdlib>
