@@ -147,11 +147,15 @@ void Setup() {
     glEnable(GL_COLOR_MATERIAL);
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 
-    GLfloat light_position[] = {0.0, 50.0, 50.0, 0.0};
+    GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
+    GLfloat diffuseLight[] = {0.8f, 0.8f, 0.8f, 1.0f};
+    GLfloat light_position[] = {200.0f, 150.0f, 300.0f, 0.0f};
 
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
 }
