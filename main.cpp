@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
     glutReshapeFunc(Resize);
     glutIdleFunc(Idle);
     glutKeyboardFunc(Keyboard);
+    glutSpecialFunc(SpecialKeyboard);
 
     glutMainLoop();
     return 0;

@@ -17,3 +17,5 @@ void Idle();
 void Keyboard(unsigned char key, int x, int y);
 // Function for handling keyboard events.
 
+void SpecialKeyboard(int key, int x, int y);
+// Function for handling special keys (arrows, PageUp/PageDown).
