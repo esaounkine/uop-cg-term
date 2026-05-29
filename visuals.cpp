@@ -13,8 +13,9 @@ std::vector<tinyobj::material_t> materials;
 
 float planeX = 0.0f;
 float planeY = 0.0f;
-float planeRotZ = 0.0f;
+float planeRotX = 0.0f;
 float planeRotY = 0.0f;
+float planeRotZ = 0.0f;
 
 const float MOVE_STEP = 5.0f;
 const float ROT_STEP = 5.0f;
@@ -56,6 +57,7 @@ void Render() {
               0.0, 1.0, 0.0);
 
     glTranslatef(planeX, planeY, 0.0f);
+    glRotatef(planeRotX, 1.0f, 0.0f, 0.0f);
     glRotatef(planeRotY, 0.0f, 1.0f, 0.0f);
     glRotatef(planeRotZ, 0.0f, 0.0f, 1.0f);
     glScalef(100.0f, 100.0f, 100.0f);
@@ -91,16 +93,21 @@ void Keyboard(const unsigned char key, int x, int y) {
 void SpecialKeyboard(int key, int x, int y) {
     int mod = glutGetModifiers();
     bool shift = (mod & GLUT_ACTIVE_SHIFT) != 0;
+    bool alt = (mod & GLUT_ACTIVE_ALT) != 0;
 
     switch (key) {
         case GLUT_KEY_UP:
-            if (shift)
+            if (alt)
+                planeRotX += ROT_STEP;
+            else if (shift)
                 planeRotZ += ROT_STEP;
             else
                 planeY += MOVE_STEP;
             break;
         case GLUT_KEY_DOWN:
-            if (shift)
+            if (alt)
+                planeRotX -= ROT_STEP;
+            else if (shift)
                 planeRotZ -= ROT_STEP;
             else
                 planeY -= MOVE_STEP;
