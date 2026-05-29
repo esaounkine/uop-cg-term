@@ -1,7 +1,5 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 
-#include <cstdio>
-#include <cstdlib>
 #include <vector>
 #include "glutwrapper.h"
 #include "visuals.h"
@@ -13,8 +11,8 @@ std::vector<tinyobj::material_t> materials;
 
 float planeX = 0.0f;
 float planeY = 0.0f;
-float planeRotX = 0.0f;
-float planeRotY = 0.0f;
+float planeRotX = -90.0f;
+float planeRotY = 5.0f;
 float planeRotZ = 0.0f;
 float propAngle = 0.0f;
 const float PROP_SPEED = 15.0f;
@@ -24,10 +22,9 @@ float propCX = 0.0f, propCY = 0.0f, propCZ = 0.0f;
 const float MOVE_STEP = 5.0f;
 const float ROT_STEP = 5.0f;
 
-void DrawModel()
-{
+void DrawModel() {
     for (size_t s = 0; s < shapes.size(); s++) {
-        const auto& shape = shapes[s];
+        const auto &shape = shapes[s];
 
         glColor3f(0.8f, 0.8f, 0.8f);
 
@@ -72,7 +69,7 @@ void Render() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(200.0, 150.0, 300.0,
+    gluLookAt(-150.0, 50.0, 0.0,
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0);
 
@@ -165,11 +162,11 @@ void Setup() {
 
     printf("Loaded %zu shapes\n", shapes.size());
 
-    // Compute propeller (shape 0) center for rotation
+    // Compute the propeller (shape[0]) center for rotation
     if (!shapes.empty()) {
         float sumX = 0.0f, sumY = 0.0f, sumZ = 0.0f;
         int count = 0;
-        const auto& shape = shapes[0];
+        const auto &shape = shapes[0];
         size_t indexOffset = 0;
         for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
             int fv = shape.mesh.num_face_vertices[f];
