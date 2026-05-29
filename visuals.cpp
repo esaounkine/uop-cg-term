@@ -16,12 +16,28 @@ float planeY = 0.0f;
 float planeRotX = 0.0f;
 float planeRotY = 0.0f;
 float planeRotZ = 0.0f;
+float propAngle = 0.0f;
+const float PROP_SPEED = 15.0f;
+
+float propCX = 0.0f, propCY = 0.0f, propCZ = 0.0f;
 
 const float MOVE_STEP = 5.0f;
 const float ROT_STEP = 5.0f;
 
-void DrawModel() {
-    for (const auto &shape: shapes) {
+void DrawModel()
+{
+    for (size_t s = 0; s < shapes.size(); s++) {
+        const auto& shape = shapes[s];
+
+        glColor3f(0.8f, 0.8f, 0.8f);
+
+        if (s == 0) {
+            glPushMatrix();
+            glTranslatef(propCX, propCY, propCZ);
+            glRotatef(propAngle, 1.0f, 0.0f, 0.0f);
+            glTranslatef(-propCX, -propCY, -propCZ);
+        }
+
         size_t indexOffset = 0;
         for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
             int fv = shape.mesh.num_face_vertices[f];
@@ -42,6 +58,10 @@ void DrawModel() {
             }
             glEnd();
             indexOffset += fv;
+        }
+
+        if (s == 0) {
+            glPopMatrix();
         }
     }
 }
@@ -78,6 +98,7 @@ void Resize(int w, int h) {
 }
 
 void Idle() {
+    propAngle += PROP_SPEED;
     glutPostRedisplay();
 }
 
@@ -114,13 +135,13 @@ void SpecialKeyboard(int key, int x, int y) {
             break;
         case GLUT_KEY_LEFT:
             if (shift)
-                planeRotY += ROT_STEP;
+                planeRotY -= ROT_STEP;
             else
                 planeX -= MOVE_STEP;
             break;
         case GLUT_KEY_RIGHT:
             if (shift)
-                planeRotY -= ROT_STEP;
+                planeRotY += ROT_STEP;
             else
                 planeX += MOVE_STEP;
             break;
@@ -140,6 +161,33 @@ void Setup() {
     }
     if (!warn.empty()) {
         printf("Warning: %s\n", warn.c_str());
+    }
+
+    printf("Loaded %zu shapes\n", shapes.size());
+
+    // Compute propeller (shape 0) center for rotation
+    if (!shapes.empty()) {
+        float sumX = 0.0f, sumY = 0.0f, sumZ = 0.0f;
+        int count = 0;
+        const auto& shape = shapes[0];
+        size_t indexOffset = 0;
+        for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
+            int fv = shape.mesh.num_face_vertices[f];
+            for (int v = 0; v < fv; v++) {
+                tinyobj::index_t idx = shape.mesh.indices[indexOffset + v];
+                sumX += attrib.vertices[3 * idx.vertex_index + 0];
+                sumY += attrib.vertices[3 * idx.vertex_index + 1];
+                sumZ += attrib.vertices[3 * idx.vertex_index + 2];
+                count++;
+            }
+            indexOffset += fv;
+        }
+        if (count > 0) {
+            propCX = sumX / count;
+            propCY = sumY / count;
+            propCZ = sumZ / count;
+            printf("Propeller center: (%.3f, %.3f, %.3f)\n", propCX, propCY, propCZ);
+        }
     }
 
     glShadeModel(GL_SMOOTH);
