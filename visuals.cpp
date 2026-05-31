@@ -193,6 +193,8 @@ void Setup() {
 
     planeTexture = LoadTexture("models/plane.jpg");
 
+    InitTerrain();
+
     // Compute the propeller (shape[0]) center for rotation
     // it was off initially, was spinning around a random axis
     if (!shapes.empty()) {
