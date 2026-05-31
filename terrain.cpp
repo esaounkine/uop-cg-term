@@ -1,6 +1,7 @@
 #include "terrain.h"
 #include "glutwrapper.h"
 #include "constants.h"
+#include "texture.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -11,6 +12,8 @@
 static float heights[TERRAIN_VERTS][TERRAIN_VERTS];
 static float normals[TERRAIN_VERTS][TERRAIN_VERTS][3];
 
+static unsigned int terrainTexture = 0;
+
 static float Rand() {
     return (float) rand() / RAND_MAX;
 }
@@ -19,11 +22,16 @@ static void Vertex(int i, int j) {
     float half = TERRAIN_SIZE * 0.5f;
     float x = -half + i * TERRAIN_STEP;
     float z = -half + j * TERRAIN_STEP;
+    float u = (float) i / TERRAIN_GRID * TERRAIN_TILES;
+    float v = (float) j / TERRAIN_GRID * TERRAIN_TILES;
     glNormal3fv(normals[i][j]);
+    glTexCoord2f(u, v);
     glVertex3f(x, TERRAIN_Y + heights[i][j], z);
 }
 
 void InitTerrain() {
+    terrainTexture = LoadTextureBMP("models/texture02.bmp");
+
     // fixed seed is left intentionally, to make the scene reproducible
     srand(TERRAIN_SEED);
 
@@ -73,7 +81,10 @@ void InitTerrain() {
 }
 
 void DrawTerrain() {
-    glColor3f(0.40f, 0.50f, 0.28f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, terrainTexture);
 
     glBegin(GL_TRIANGLES);
     for (int i = 0; i < TERRAIN_GRID; i++) {
@@ -88,4 +99,6 @@ void DrawTerrain() {
         }
     }
     glEnd();
+
+    glDisable(GL_TEXTURE_2D);
 }

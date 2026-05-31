@@ -91,7 +91,6 @@ void Render() {
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0);
 
-    glDisable(GL_TEXTURE_2D);
     DrawTerrain();
 
     glEnable(GL_TEXTURE_2D);

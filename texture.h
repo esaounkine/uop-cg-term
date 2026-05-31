@@ -3,5 +3,7 @@
 
 unsigned int LoadTexture(const char* filename);
 
+unsigned int LoadTextureBMP(const char* filename);
+
 #endif
 

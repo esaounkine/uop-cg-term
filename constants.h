@@ -10,6 +10,7 @@
 #define TERRAIN_HILLS 40
 #define TERRAIN_SEED 1
 #define TERRAIN_VERTS (TERRAIN_GRID + 1)
+#define TERRAIN_TILES 10.0f
 
 #define CAM_X (-150.0f)
 #define CAM_Y   50.0f
