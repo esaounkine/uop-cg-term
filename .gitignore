@@ -4,3 +4,5 @@
 build/
 
 labs/
+
+.DS_Store
