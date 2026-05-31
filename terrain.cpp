@@ -30,7 +30,7 @@ static void Vertex(int i, int j) {
 }
 
 void InitTerrain() {
-    terrainTexture = LoadTextureBMP("models/texture02.bmp");
+    terrainTexture = LoadTextureBMP("models/terrain.bmp");
 
     // fixed seed is left intentionally, to make the scene reproducible
     srand(TERRAIN_SEED);
