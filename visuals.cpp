@@ -5,6 +5,7 @@
 #include "visuals.h"
 #include "deps/tiny_obj_loader.h"
 #include "texture.h"
+#include "terrain.h"
 
 tinyobj::attrib_t attrib;
 std::vector<tinyobj::shape_t> shapes;
@@ -89,6 +90,13 @@ void Render() {
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0);
 
+    glDisable(GL_TEXTURE_2D);
+    DrawTerrain();
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, planeTexture);
+
+    glPushMatrix();
     glTranslatef(planeX, planeY, 0.0f);
     glRotatef(planeRotX, 1.0f, 0.0f, 0.0f);
     glRotatef(planeRotY, 0.0f, 1.0f, 0.0f);
@@ -96,6 +104,7 @@ void Render() {
     glScalef(100.0f, 100.0f, 100.0f);
 
     DrawModel();
+    glPopMatrix();
 
     glutSwapBuffers();
 }
@@ -143,8 +152,11 @@ void SpecialKeyboard(int key, int x, int y) {
                 planeRotX -= ROT_STEP;
             else if (shift)
                 planeRotZ -= ROT_STEP;
-            else
+            else {
                 planeY -= MOVE_STEP;
+                if (planeY < -20.0f)
+                    planeY = -20.0f;
+            }
             break;
         case GLUT_KEY_LEFT:
             if (shift)
@@ -179,10 +191,6 @@ void Setup() {
     printf("Loaded %zu shapes, %zu materials\n", shapes.size(), materials.size());
 
     planeTexture = LoadTexture("models/plane.jpg");
-    if (planeTexture) {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, planeTexture);
-    }
 
     // Compute the propeller (shape[0]) center for rotation
     // it was off initially, was spinning around a random axis
