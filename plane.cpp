@@ -153,3 +153,13 @@ void RotatePlane(float dx, float dy, float dz) {
     planeRotY += dy;
     planeRotZ += dz;
 }
+
+void GetPlanePosition(float* x, float* y, float* z) {
+    *x = planeX;
+    *y = planeY;
+    *z = 0.0f;
+}
+
+float GetPlaneHeading() {
+    return planeRotY;
+}

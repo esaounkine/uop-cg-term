@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "terrain.h"
 #include "plane.h"
+#include "camera.h"
 
 static const float MOVE_STEP = 5.0f;
 static const float ROT_STEP = 5.0f;
@@ -13,9 +14,7 @@ void Render() {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(CAM_X, CAM_Y, CAM_Z,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0);
+    ApplyCamera();
 
     DrawTerrain();
     DrawPlane();
