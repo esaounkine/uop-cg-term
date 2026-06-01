@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(PROJECTNAME flight-simulator)
+set(PROJECTNAME term-project)
 
-set(SOURCES main.cpp visuals.cpp texture.cpp terrain.cpp fog.cpp plane.cpp camera.cpp BMPLoader.cpp)
+set(SOURCES main.cpp visuals.cpp texture.cpp terrain.cpp fog.cpp plane.cpp camera.cpp)
 
 project(${PROJECTNAME})
 
