@@ -1,7 +1,11 @@
+#define STB_PERLIN_IMPLEMENTATION
+
 #include "terrain.h"
 #include "glutwrapper.h"
 #include "constants.h"
 #include "texture.h"
+#include "plane.h"
+#include "deps/stb_perlin.h"
 #include <cmath>
 
 // height field is a grid of vertices
@@ -11,32 +15,15 @@ static float heights[TERRAIN_VERTS][TERRAIN_VERTS];
 static float normals[TERRAIN_VERTS][TERRAIN_VERTS][3];
 static unsigned int terrainTexture = 0;
 
-static float Rand() {
-    return (float) rand() / RAND_MAX;
-}
+static float originX = 0.0f, originZ = 0.0f;
+static float lastCenterX = MAXFLOAT, lastCenterZ = MAXFLOAT;
 
-static void GenerateHills() {
-    for (int i = 0; i < TERRAIN_VERTS; i++)
-        for (int j = 0; j < TERRAIN_VERTS; j++)
-            heights[i][j] = 0.0f;
-
-    for (int h = 0; h < TERRAIN_HILLS; h++) {
-        float cx = Rand() * TERRAIN_GRID;
-        float cz = Rand() * TERRAIN_GRID;
-        float radius = (0.12f + 0.16f * Rand()) * TERRAIN_GRID;
-        float peak = (0.15f + 0.20f * Rand()) * TERRAIN_HEIGHT_SCALE;
-
-        for (int i = 0; i < TERRAIN_VERTS; i++) {
-            for (int j = 0; j < TERRAIN_VERTS; j++) {
-                float dx = i - cx;
-                float dz = j - cz;
-                float d = sqrtf(dx * dx + dz * dz);
-                if (d < radius) {
-                    heights[i][j] += peak * 0.5f * (1.0f + cosf(d / radius * 3.14159265f));
-                }
-            }
-        }
-    }
+// terrain height at a world position
+static float HeightAt(float wx, float wz) {
+    float x = wx / TERRAIN_NOISE_SCALE + TERRAIN_SEED * 100.0f;
+    float z = wz / TERRAIN_NOISE_SCALE;
+    float n = stb_perlin_fbm_noise3(x, 0.0f, z, 2.0f, 0.5f, TERRAIN_OCTAVES);
+    return (n * 0.5f + 0.5f) * TERRAIN_HEIGHT_SCALE; // [-1,1] -> [0, scale]
 }
 
 // per-vertex normals from neighbour height differences (for proper shading)
@@ -60,23 +47,42 @@ static void ComputeNormals() {
     }
 }
 
-static void Vertex(int i, int j) {
+static void Recentre(float cx, float cz) {
     float half = TERRAIN_SIZE * 0.5f;
-    float x = -half + i * TERRAIN_STEP;
-    float z = -half + j * TERRAIN_STEP;
-    float u = (float) i / TERRAIN_GRID * TERRAIN_TILES;
-    float v = (float) j / TERRAIN_GRID * TERRAIN_TILES;
+    originX = floorf((cx - half) / TERRAIN_STEP) * TERRAIN_STEP;
+    originZ = floorf((cz - half) / TERRAIN_STEP) * TERRAIN_STEP;
+
+    for (int i = 0; i < TERRAIN_VERTS; i++)
+        for (int j = 0; j < TERRAIN_VERTS; j++)
+            heights[i][j] = HeightAt(originX + i * TERRAIN_STEP, originZ + j * TERRAIN_STEP);
+
+    ComputeNormals();
+}
+
+static void Vertex(int i, int j) {
+    float x = originX + i * TERRAIN_STEP;
+    float z = originZ + j * TERRAIN_STEP;
+
+    float tile = TERRAIN_SIZE / TERRAIN_TILES;
     glNormal3fv(normals[i][j]);
-    glTexCoord2f(u, v);
+    glTexCoord2f(x / tile, z / tile);
     glVertex3f(x, TERRAIN_Y + heights[i][j], z);
 }
 
 void InitTerrain() {
     terrainTexture = LoadTextureBMP("models/terrain.bmp");
+    Recentre(0.0f, 0.0f);
+}
 
-    srand(TERRAIN_SEED); // fixed seed to keep terrain reproducible
-    GenerateHills();
-    ComputeNormals();
+// rebuild when the plane moves away from last centre
+void UpdateTerrain() {
+    float px, py, pz;
+    GetPlanePosition(&px, &py, &pz);
+    if (fabsf(px - lastCenterX) > TERRAIN_STEP || fabsf(pz - lastCenterZ) > TERRAIN_STEP) {
+        Recentre(px, pz);
+        lastCenterX = px;
+        lastCenterZ = pz;
+    }
 }
 
 void DrawTerrain() {

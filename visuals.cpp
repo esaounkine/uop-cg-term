@@ -16,6 +16,7 @@ void Render() {
     glLoadIdentity();
     ApplyCamera();
 
+    UpdateTerrain();
     DrawTerrain();
     DrawPlane();
 
@@ -36,9 +37,28 @@ void Idle() {
     glutPostRedisplay();
 }
 
+void MouseMotion(int x, int y) {
+    CameraMouseMotion(x, y);
+}
+
+void MouseEntry(int state) {
+    CameraMouseEntry(state);
+}
+
 void Keyboard(unsigned char key, int x, int y) {
-    if (key == 'q') {
-        exit(0);
+    switch (key) {
+        case 'q':
+            exit(0);
+        case '=':
+        case '+':
+            CameraZoom(-CAM_ZOOM_STEP);
+            break;
+        case '-':
+        case '_':
+            CameraZoom(CAM_ZOOM_STEP);
+            break;
+        default:
+            break;
     }
 }
 

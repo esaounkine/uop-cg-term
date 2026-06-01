@@ -3,6 +3,7 @@
 #include <vector>
 #include "glutwrapper.h"
 #include "plane.h"
+#include "constants.h"
 #include "deps/tiny_obj_loader.h"
 #include "texture.h"
 
@@ -14,7 +15,7 @@ static unsigned int planeTexture = 0;
 
 // plane position and direction
 static float planeX = 0.0f;
-static float planeY = 0.0f;
+static float planeY = PLANE_START_Y;
 static float planeRotX = -90.0f;
 static float planeRotY = 5.0f;
 static float planeRotZ = 0.0f;

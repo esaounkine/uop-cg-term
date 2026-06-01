@@ -19,3 +19,9 @@ void Keyboard(unsigned char key, int x, int y);
 
 void SpecialKeyboard(int key, int x, int y);
 // Function for handling special keys (arrows, PageUp/PageDown).
+
+void MouseMotion(int x, int y);
+// Mouse movement (camera orbit).
+
+void MouseEntry(int state);
+// Cursor entering/leaving the window (gate mouse capture).

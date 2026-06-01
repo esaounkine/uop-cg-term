@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 #include "glutwrapper.h"
 #include "visuals.h"
 
@@ -20,6 +20,9 @@ int main(int argc, char* argv[])
     glutIdleFunc(Idle);
     glutKeyboardFunc(Keyboard);
     glutSpecialFunc(SpecialKeyboard);
+    glutPassiveMotionFunc(MouseMotion);
+    glutMotionFunc(MouseMotion);
+    glutEntryFunc(MouseEntry);
 
     glutMainLoop();
     return 0;
