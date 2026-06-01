@@ -28,6 +28,12 @@
 #define PLANE_BANK_ANGLE 25.0f
 #define PLANE_ROLL_DECAY 0.95f // how quickly the plane returns to level after turning: 1.0 = never, 0.0 = instantly
 
+#define FOG_R 0.85f
+#define FOG_G 0.88f
+#define FOG_B 0.92f
+#define FOG_START 250.0f
+#define FOG_END (TERRAIN_SIZE / 2)
+
 #define CAM_DIST   150.0f
 #define CAM_HEIGHT  50.0f
 #define CAM_MOUSE_SENS  0.3f

@@ -5,6 +5,7 @@
 #include "terrain.h"
 #include "plane.h"
 #include "camera.h"
+#include "fog.h"
 
 void Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -113,5 +114,5 @@ void Setup() {
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
+    DrawFog();
 }
