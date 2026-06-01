@@ -6,9 +6,6 @@
 #include "plane.h"
 #include "camera.h"
 
-static const float MOVE_STEP = 5.0f;
-static const float ROT_STEP = 5.0f;
-
 void Render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -33,6 +30,7 @@ void Resize(int w, int h) {
 }
 
 void Idle() {
+    UpdatePlane();
     SpinPropeller();
     glutPostRedisplay();
 }
@@ -63,29 +61,19 @@ void Keyboard(unsigned char key, int x, int y) {
 }
 
 void SpecialKeyboard(int key, int x, int y) {
-    int mod = glutGetModifiers();
-    bool shift = (mod & GLUT_ACTIVE_SHIFT) != 0;
-    bool alt = (mod & GLUT_ACTIVE_ALT) != 0;
-
-    // arrows move; +shift rotates about y/z; +alt pitches about x
+    // left/right turn the heading; up/down change cruise speed
     switch (key) {
-        case GLUT_KEY_UP:
-            if (alt) RotatePlane(ROT_STEP, 0.0f, 0.0f);
-            else if (shift) RotatePlane(0.0f, 0.0f, ROT_STEP);
-            else MovePlane(0.0f, MOVE_STEP);
-            break;
-        case GLUT_KEY_DOWN:
-            if (alt) RotatePlane(-ROT_STEP, 0.0f, 0.0f);
-            else if (shift) RotatePlane(0.0f, 0.0f, -ROT_STEP);
-            else MovePlane(0.0f, -MOVE_STEP);
-            break;
         case GLUT_KEY_LEFT:
-            if (shift) RotatePlane(0.0f, -ROT_STEP, 0.0f);
-            else MovePlane(-MOVE_STEP, 0.0f);
+            TurnPlane(PLANE_TURN_STEP);
             break;
         case GLUT_KEY_RIGHT:
-            if (shift) RotatePlane(0.0f, ROT_STEP, 0.0f);
-            else MovePlane(MOVE_STEP, 0.0f);
+            TurnPlane(-PLANE_TURN_STEP);
+            break;
+        case GLUT_KEY_UP:
+            ChangePlaneSpeed(PLANE_SPEED_STEP);
+            break;
+        case GLUT_KEY_DOWN:
+            ChangePlaneSpeed(-PLANE_SPEED_STEP);
             break;
         default:
             break;

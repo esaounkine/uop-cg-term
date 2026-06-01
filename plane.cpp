@@ -1,6 +1,7 @@
 #define TINYOBJLOADER_IMPLEMENTATION
 
 #include <vector>
+#include <cmath>
 #include "glutwrapper.h"
 #include "plane.h"
 #include "constants.h"
@@ -15,10 +16,12 @@ static unsigned int planeTexture = 0;
 
 // plane position and direction
 static float planeX = 0.0f;
+static float planeZ = 0.0f;
 static float planeY = PLANE_START_Y;
 static float planeRotX = -90.0f;
-static float planeRotY = 5.0f;
+static float planeRotY = 0.0f;
 static float planeRotZ = 0.0f;
+static float planeSpeed = PLANE_SPEED;
 
 // propeller (shapes[0]) spins about its centre
 static float propAngle = 0.0f;
@@ -26,7 +29,6 @@ static float propCX = 0.0f, propCY = 0.0f, propCZ = 0.0f;
 static const float PROP_SPEED = 15.0f;
 
 static const float PLANE_SCALE = 100.0f;
-static const float PLANE_FLOOR = -20.0f;
 
 // average propeller shape vertices to find the spin centre
 static void ComputePropellerCenter() {
@@ -111,9 +113,9 @@ void DrawPlane() {
     glBindTexture(GL_TEXTURE_2D, planeTexture);
 
     glPushMatrix();
-    glTranslatef(planeX, planeY, 0.0f);
-    glRotatef(planeRotX, 1.0f, 0.0f, 0.0f);
+    glTranslatef(planeX, planeY, planeZ);
     glRotatef(planeRotY, 0.0f, 1.0f, 0.0f);
+    glRotatef(planeRotX, 1.0f, 0.0f, 0.0f);
     glRotatef(planeRotZ, 0.0f, 0.0f, 1.0f);
     glScalef(PLANE_SCALE, PLANE_SCALE, PLANE_SCALE);
 
@@ -143,22 +145,26 @@ void SpinPropeller() {
     propAngle += PROP_SPEED;
 }
 
-void MovePlane(float dx, float dy) {
-    planeX += dx;
-    planeY += dy;
-    if (planeY < PLANE_FLOOR) planeY = PLANE_FLOOR;
+void UpdatePlane() {
+    float yaw = planeRotY * DEG2RAD;
+    planeX += planeSpeed * cosf(yaw);
+    planeZ -= planeSpeed * sinf(yaw);
 }
 
-void RotatePlane(float dx, float dy, float dz) {
-    planeRotX += dx;
-    planeRotY += dy;
-    planeRotZ += dz;
+void TurnPlane(float deg) {
+    planeRotY += deg;
+}
+
+void ChangePlaneSpeed(float delta) {
+    planeSpeed += delta;
+    if (planeSpeed < PLANE_SPEED_MIN) planeSpeed = PLANE_SPEED_MIN;
+    if (planeSpeed > PLANE_SPEED_MAX) planeSpeed = PLANE_SPEED_MAX;
 }
 
 void GetPlanePosition(float* x, float* y, float* z) {
     *x = planeX;
     *y = planeY;
-    *z = 0.0f;
+    *z = planeZ;
 }
 
 float GetPlaneHeading() {

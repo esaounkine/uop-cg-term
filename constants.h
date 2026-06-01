@@ -18,6 +18,11 @@
 #define TERRAIN_RECENTRE_CELLS 8 // rebuild the field after moving this many cells
 
 #define PLANE_START_Y 150.0f
+#define PLANE_SPEED      2.0f
+#define PLANE_SPEED_MIN  0.5f
+#define PLANE_SPEED_MAX  8.0f
+#define PLANE_SPEED_STEP 0.5f
+#define PLANE_TURN_STEP  2.0f
 
 #define CAM_DIST   150.0f
 #define CAM_HEIGHT  50.0f

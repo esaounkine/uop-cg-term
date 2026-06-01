@@ -5,8 +5,9 @@ void InitPlane();
 void DrawPlane();
 void SpinPropeller();
 
-void MovePlane(float dx, float dy);
-void RotatePlane(float dx, float dy, float dz);
+void UpdatePlane();
+void TurnPlane(float deg);
+void ChangePlaneSpeed(float delta);
 
 void GetPlanePosition(float* x, float* y, float* z);
 float GetPlaneHeading();
