@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(PROJECTNAME term-project)
 
-set(SOURCES main.cpp visuals.cpp texture.cpp terrain.cpp BMPLoader.cpp)
+set(SOURCES main.cpp visuals.cpp texture.cpp terrain.cpp plane.cpp BMPLoader.cpp)
 
 project(${PROJECTNAME})
 
