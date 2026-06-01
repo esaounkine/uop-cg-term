@@ -15,6 +15,7 @@
 #define TERRAIN_TILES 10.0f
 #define TERRAIN_NOISE_SCALE 250.0f
 #define TERRAIN_OCTAVES 4
+#define TERRAIN_RECENTRE_CELLS 8 // rebuild the field after moving this many cells
 
 #define PLANE_START_Y 150.0f
 

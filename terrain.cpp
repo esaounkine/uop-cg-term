@@ -74,11 +74,12 @@ void InitTerrain() {
     Recentre(0.0f, 0.0f);
 }
 
-// rebuild when the plane moves away from last centre
+// rebuild only when the plane crosses a few cells from last centre
 void UpdateTerrain() {
     float px, py, pz;
     GetPlanePosition(&px, &py, &pz);
-    if (fabsf(px - lastCenterX) > TERRAIN_STEP || fabsf(pz - lastCenterZ) > TERRAIN_STEP) {
+    float threshold = TERRAIN_STEP * TERRAIN_RECENTRE_CELLS;
+    if (fabsf(px - lastCenterX) > threshold || fabsf(pz - lastCenterZ) > threshold) {
         Recentre(px, pz);
         lastCenterX = px;
         lastCenterZ = pz;
