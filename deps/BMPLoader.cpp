@@ -42,7 +42,7 @@ glTexImage2D(GL_TEXTURE_2D,0,3,bmp.width,bmp.height,0,GL_RGB,GL_UNSIGNED_BYTE,bm
 */
 
 
-#include "BMPLoader.h"
+#include "../BMPLoader.h"
 
 #include <stdio.h>
 

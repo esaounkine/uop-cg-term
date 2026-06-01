@@ -1,5 +1,5 @@
 #include "camera.h"
-#include "glutwrapper.h"
+#include "deps/glutwrapper.h"
 #include "constants.h"
 #include "plane.h"
 #include <cmath>

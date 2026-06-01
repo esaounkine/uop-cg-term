@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <cmath>
-#include "glutwrapper.h"
+#include "deps/glutwrapper.h"
 #include "plane.h"
 #include "constants.h"
 #include "deps/tiny_obj_loader.h"

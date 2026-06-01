@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "glutwrapper.h"
+#include "deps/glutwrapper.h"
 #include "visuals.h"
 
 int main(int argc, char* argv[])

@@ -1,7 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "deps/stb_image.h"
-#include "glutwrapper.h"
-#include "BMPLoader.h"
+#include "deps/glutwrapper.h"
+#include "deps/BMPLoader.h"
 
 static unsigned int MakeTexture(int width, int height, const unsigned char* pixels) {
     GLuint tex;

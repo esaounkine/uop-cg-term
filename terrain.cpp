@@ -1,7 +1,7 @@
 #define STB_PERLIN_IMPLEMENTATION
 
 #include "terrain.h"
-#include "glutwrapper.h"
+#include "deps/glutwrapper.h"
 #include "constants.h"
 #include "texture.h"
 #include "plane.h"

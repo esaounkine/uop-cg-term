@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "glutwrapper.h"
+#include "deps/glutwrapper.h"
 #include "visuals.h"
 #include "constants.h"
 #include "terrain.h"
