@@ -25,6 +25,8 @@
 #define PLANE_TURN_STEP  2.0f
 #define PLANE_PITCH_STEP 2.0f
 #define PLANE_PITCH_LIMIT 60.0f // prevent from going vertical
+#define PLANE_BANK_ANGLE 25.0f
+#define PLANE_ROLL_DECAY 0.95f // how quickly the plane returns to level after turning: 1.0 = never, 0.0 = instantly
 
 #define CAM_DIST   150.0f
 #define CAM_HEIGHT  50.0f
@@ -35,4 +37,3 @@
 #define CAM_ZOOM_MAX    3.0f
 
 #endif
-

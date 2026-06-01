@@ -20,7 +20,7 @@ static float planeZ = 0.0f;
 static float planeY = PLANE_START_Y;
 static float planeRotX = -90.0f;
 static float planeRotY = 0.0f;
-static float planeRotZ = 0.0f;
+static float planeRoll = 0.0f;
 static float planePitch = 0.0f;
 static float planeSpeed = PLANE_SPEED;
 
@@ -117,8 +117,8 @@ void DrawPlane() {
     glTranslatef(planeX, planeY, planeZ);
     glRotatef(planeRotY, 0.0f, 1.0f, 0.0f);
     glRotatef(planePitch, 0.0f, 0.0f, 1.0f);
+    glRotatef(planeRoll, 1.0f, 0.0f, 0.0f);
     glRotatef(planeRotX, 1.0f, 0.0f, 0.0f);
-    glRotatef(planeRotZ, 0.0f, 0.0f, 1.0f);
     glScalef(PLANE_SCALE, PLANE_SCALE, PLANE_SCALE);
 
     for (size_t s = 0; s < shapes.size(); s++) {
@@ -154,10 +154,14 @@ void UpdatePlane() {
     planeX += horiz * cosf(yaw);
     planeZ -= horiz * sinf(yaw);
     planeY += planeSpeed * sinf(pitch);
+
+    // bank back to level when done turning
+    planeRoll *= PLANE_ROLL_DECAY;
 }
 
 void TurnPlane(float deg) {
     planeRotY += deg;
+    planeRoll = (deg < 0.0f) ? PLANE_BANK_ANGLE : -PLANE_BANK_ANGLE;
 }
 
 void PitchPlane(float deg) {
