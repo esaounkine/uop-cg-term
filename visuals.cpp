@@ -47,6 +47,12 @@ void Keyboard(unsigned char key, int x, int y) {
     switch (key) {
         case 'q':
             exit(0);
+        case 'w':
+            ChangePlaneSpeed(PLANE_SPEED_STEP);
+            break;
+        case 's':
+            ChangePlaneSpeed(-PLANE_SPEED_STEP);
+            break;
         case '=':
         case '+':
             CameraZoom(-CAM_ZOOM_STEP);
@@ -58,10 +64,11 @@ void Keyboard(unsigned char key, int x, int y) {
         default:
             break;
     }
+    glutPostRedisplay();
 }
 
 void SpecialKeyboard(int key, int x, int y) {
-    // left/right turn the heading; up/down change cruise speed
+    // left/right yaw the heading; up/down pitch the nose
     switch (key) {
         case GLUT_KEY_LEFT:
             TurnPlane(PLANE_TURN_STEP);
@@ -70,10 +77,10 @@ void SpecialKeyboard(int key, int x, int y) {
             TurnPlane(-PLANE_TURN_STEP);
             break;
         case GLUT_KEY_UP:
-            ChangePlaneSpeed(PLANE_SPEED_STEP);
+            PitchPlane(PLANE_PITCH_STEP);
             break;
         case GLUT_KEY_DOWN:
-            ChangePlaneSpeed(-PLANE_SPEED_STEP);
+            PitchPlane(-PLANE_PITCH_STEP);
             break;
         default:
             break;

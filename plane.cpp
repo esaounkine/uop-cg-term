@@ -21,6 +21,7 @@ static float planeY = PLANE_START_Y;
 static float planeRotX = -90.0f;
 static float planeRotY = 0.0f;
 static float planeRotZ = 0.0f;
+static float planePitch = 0.0f;
 static float planeSpeed = PLANE_SPEED;
 
 // propeller (shapes[0]) spins about its centre
@@ -115,6 +116,7 @@ void DrawPlane() {
     glPushMatrix();
     glTranslatef(planeX, planeY, planeZ);
     glRotatef(planeRotY, 0.0f, 1.0f, 0.0f);
+    glRotatef(planePitch, 0.0f, 0.0f, 1.0f);
     glRotatef(planeRotX, 1.0f, 0.0f, 0.0f);
     glRotatef(planeRotZ, 0.0f, 0.0f, 1.0f);
     glScalef(PLANE_SCALE, PLANE_SCALE, PLANE_SCALE);
@@ -147,12 +149,21 @@ void SpinPropeller() {
 
 void UpdatePlane() {
     float yaw = planeRotY * DEG2RAD;
-    planeX += planeSpeed * cosf(yaw);
-    planeZ -= planeSpeed * sinf(yaw);
+    float pitch = planePitch * DEG2RAD;
+    float horiz = planeSpeed * cosf(pitch);
+    planeX += horiz * cosf(yaw);
+    planeZ -= horiz * sinf(yaw);
+    planeY += planeSpeed * sinf(pitch);
 }
 
 void TurnPlane(float deg) {
     planeRotY += deg;
+}
+
+void PitchPlane(float deg) {
+    planePitch += deg;
+    if (planePitch > PLANE_PITCH_LIMIT) planePitch = PLANE_PITCH_LIMIT;
+    if (planePitch < -PLANE_PITCH_LIMIT) planePitch = -PLANE_PITCH_LIMIT;
 }
 
 void ChangePlaneSpeed(float delta) {

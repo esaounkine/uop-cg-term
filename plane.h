@@ -7,6 +7,7 @@ void SpinPropeller();
 
 void UpdatePlane();
 void TurnPlane(float deg);
+void PitchPlane(float deg);
 void ChangePlaneSpeed(float delta);
 
 void GetPlanePosition(float* x, float* y, float* z);
