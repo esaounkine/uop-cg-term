@@ -3,6 +3,7 @@
 #include <vector>
 #include "glutwrapper.h"
 #include "visuals.h"
+#include "constants.h"
 #include "deps/tiny_obj_loader.h"
 #include "texture.h"
 #include "terrain.h"
@@ -86,7 +87,7 @@ void Render() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(-150.0, 50.0, 0.0,
+    gluLookAt(CAM_X, CAM_Y, CAM_Z,
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0);
 
